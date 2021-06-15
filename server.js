@@ -2,6 +2,7 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const jsonServer = require("json-server");
 const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
 
 const server = jsonServer.create();
 const router = jsonServer.router("./database.json");
@@ -61,10 +62,10 @@ server.post("/auth/register", (req, res) => {
     var data = JSON.parse(data.toString());
 
     // Get the id of last user
-    var last_item_id = data.users[data.users.length - 1].id;
+    var id = uuidv4();
 
     //Add new user
-    data.users.push({ id: last_item_id + 1, email: email, password: password }); //add some data
+    data.users.push({ id: id, email: email, password: password }); //add some data
     var writeData = fs.writeFile(
       "./users.json",
       JSON.stringify(data),
